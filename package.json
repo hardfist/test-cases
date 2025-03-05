@@ -1,0 +1,18 @@
+{
+  "name": "test-cases",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:rs": "rspack build",
+    "build:rd": "rolldown build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "rolldown": "1.0.0-beta.3",
+    "@rspack/core": "1.2.7",
+    "@rspack/cli": "1.2.7"
+  }
+}
