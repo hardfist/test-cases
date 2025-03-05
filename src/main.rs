@@ -1,21 +1,22 @@
-use std::{rc::Rc, sync::Arc};
 
 use oxc::{
     codegen::{Codegen, CodegenOptions},
     mangler::{MangleOptions, Mangler},
-    minifier::{CompressOptions, Compressor, MinifierOptions},
+    minifier::{CompressOptions, Compressor},
     semantic::SemanticBuilder,
     span::SourceType,
 };
 
 fn main() {
     let input_1 = include_str!("../fixtures/input1.js").to_string();
-    //let input_2: String = include_str!("../fixtures/input2.js").to_string();
-    oxc_minify(&input_1);
-    swc_minify(input_1);
+    let input_2: String = include_str!("../fixtures/input2.js").to_string();
+    oxc_minify(&input_1,1);
+    swc_minify(input_1,1);
+    oxc_minify(&input_2,2);
+    swc_minify(input_2,2);
     
 }
-fn oxc_minify(code: &str)  {
+fn oxc_minify(code: &str,input: i32)  {
     use oxc::allocator::Allocator;
     use oxc::parser::Parser;
     let allocator = Allocator::new();
@@ -40,13 +41,15 @@ fn oxc_minify(code: &str)  {
     };
     let ret = Codegen::new()
         .with_options(CodegenOptions {
+            minify:true,
+            comments:false,
             ..Default::default()
         })
         .with_symbol_table(Some(symbol_table))
         .build(&program);
-    std::fs::write("output/oxc.js", ret.code).unwrap();
+    std::fs::write(format!("output/oxc-{input}.js"), ret.code).unwrap();
 }
-fn swc_minify(code: String) {
+fn swc_minify(code: String,input:i32) {
     use swc_core::common::Mark;
     use swc_core::common::comments::SingleThreadedComments;
     use swc_core::common::input::{self, SourceFileInput};
@@ -77,6 +80,8 @@ fn swc_minify(code: String) {
             Some(&comments),
             None,
             &MinifyOptions {
+                mangle: Some(Default::default()),
+                compress: Some(Default::default()),
                 ..Default::default()
             },
             &ExtraOptions {
@@ -96,7 +101,7 @@ fn swc_minify(code: String) {
                 None,
             ));
             let mut emitter = codegen::Emitter {
-                cfg: codegen::Config::default(),
+                cfg: codegen::Config::default().with_minify(true),
                 comments: Some(&comments),
                 cm: cm.clone(),
                 wr,
@@ -104,7 +109,7 @@ fn swc_minify(code: String) {
             emitter.emit_program(&program).unwrap();
         }
         let code =  unsafe { String::from_utf8_unchecked(buf) };
-        std::fs::write("output/swc.js", code).unwrap();
+        std::fs::write(format!("output/swc-{input}.js"), code).unwrap();
     })
     
 }
