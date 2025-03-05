@@ -3,9 +3,12 @@ const path = require('path');
 console.log(path.resolve(__dirname,'./fixtures/input1.js'));
 module.exports = defineConfig({
    input: {
-     main: path.resolve(__dirname,'./fixtures/input1.js')
+     rolldown: path.resolve(__dirname,'./fixtures/input1.js')
    },
+   
    output: {
-    dir: path.resolve(__dirname,'dist/rolldown')
+    dir: path.resolve(__dirname,'dist'),
+    minify:true,
+    sourcemap:true
    }
 })

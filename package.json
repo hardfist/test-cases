@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build:all": "npm run build:rs && npm run build:rd",
     "build:rs": "rspack build",
     "build:rd": "rolldown build -c rolldown.config.js"
   },
