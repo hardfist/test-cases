@@ -1,0 +1,21 @@
+[package]
+name = "test-cases"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+oxc                = { version = "0.53.0", features = ["transformer", "minifier", "mangler", "semantic", "codegen", "serialize"] }
+swc_config = { version = "2.0.0"}
+swc_core = { version = "14.0.0", features = [
+  "__parser",
+  "__utils",
+  "common_sourcemap",
+  "ecma_preset_env",
+  "ecma_transforms_optimization",
+  "ecma_transforms_module",
+  "ecma_transforms_compat",
+  "ecma_transforms_typescript",
+  "ecma_quote",
+  "ecma_minifier",
+  "ecma_codegen"
+] }
