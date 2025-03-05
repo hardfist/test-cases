@@ -10,12 +10,12 @@ use oxc::{
 
 fn main() {
     let input_1 = include_str!("../fixtures/input1.js").to_string();
-    let input_2 = include_str!("../fixtures/input2.js").to_string();
+    //let input_2: String = include_str!("../fixtures/input2.js").to_string();
     oxc_minify(&input_1);
     swc_minify(input_1);
     
 }
-fn oxc_minify(code: &str) -> String {
+fn oxc_minify(code: &str)  {
     use oxc::allocator::Allocator;
     use oxc::parser::Parser;
     let allocator = Allocator::new();
@@ -44,9 +44,9 @@ fn oxc_minify(code: &str) -> String {
         })
         .with_symbol_table(Some(symbol_table))
         .build(&program);
-    ret.code
+    std::fs::write("output/oxc.js", ret.code).unwrap();
 }
-fn swc_minify(code: String) -> String {
+fn swc_minify(code: String) {
     use swc_core::common::Mark;
     use swc_core::common::comments::SingleThreadedComments;
     use swc_core::common::input::{self, SourceFileInput};
@@ -103,6 +103,8 @@ fn swc_minify(code: String) -> String {
             };
             emitter.emit_program(&program).unwrap();
         }
-        unsafe { String::from_utf8_unchecked(buf) }
+        let code =  unsafe { String::from_utf8_unchecked(buf) };
+        std::fs::write("output/swc.js", code).unwrap();
     })
+    
 }

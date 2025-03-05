@@ -19,3 +19,5 @@ swc_core = { version = "14.0.0", features = [
   "ecma_minifier",
   "ecma_codegen"
 ] }
+[profile.release]
+debug = true
