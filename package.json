@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build:rs": "rspack build",
-    "build:rd": "rolldown build"
+    "build:rd": "rolldown build -c rolldown.config.js"
   },
   "keywords": [],
   "author": "",
